@@ -46,7 +46,7 @@
         <v-icon>mdi-history</v-icon>
       </v-btn>
 
-      <v-btn to="home" style="height: inherit">
+      <v-btn to="/" style="height: inherit">
         <span>当前行程</span>
         <v-icon>event_note</v-icon>
       </v-btn>
