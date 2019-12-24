@@ -1,11 +1,39 @@
 <template>
   <v-app>
     <v-app-bar app color="primary" dark>
-      <div class="d-flex align-center">
-        <span>出行小助手</span>
-      </div>
+      <!-- <v-app-bar-nav-icon></v-app-bar-nav-icon> -->
+      <v-btn
+        icon
+        v-show="
+          $route.path !== '/' &&
+            $route.path !== '/settings' &&
+            $route.path !== '/plan'
+        "
+      >
+        <v-icon>mdi-arrow-left</v-icon>
+      </v-btn>
+
+      <v-toolbar-title>{{ title }}</v-toolbar-title>
 
       <v-spacer></v-spacer>
+
+      <v-menu left bottom>
+        <template v-slot:activator="{ on }">
+          <v-btn icon v-on="on">
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item
+            v-for="(item, i) in menuList"
+            :key="i"
+            @click="item.to !== $route.path && $router.push(item.to)"
+          >
+            <v-list-item-title>{{ item.name }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
 
     <v-content>
@@ -14,12 +42,12 @@
 
     <v-bottom-navigation grow app>
       <v-btn to="plan">
-        <span>出行规划</span>
+        <span>我的计划</span>
         <v-icon>mdi-history</v-icon>
       </v-btn>
 
       <v-btn to="/">
-        <span>日程表</span>
+        <span>当前行程</span>
         <v-icon>event_note</v-icon>
       </v-btn>
 
@@ -32,10 +60,30 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
+
 export default {
   name: "App",
   data: () => ({
-    //
-  })
+    menuList: [
+      {
+        name: "批量删除",
+        to: "/"
+      },
+      {
+        name: "新的一天",
+        to: "/"
+      }
+    ]
+  }),
+  computed: {
+    ...mapState({
+      title: "title",
+      selected: "selected"
+    })
+  },
+  created() {
+    this.$store.commit("setSelected");
+  }
 };
 </script>
