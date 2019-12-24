@@ -40,18 +40,18 @@
       <router-view />
     </v-content>
 
-    <v-bottom-navigation grow app :value="active">
-      <v-btn to="plan">
+    <v-bottom-navigation fixed grow app :value="active">
+      <v-btn to="plan" style="height: inherit">
         <span>我的计划</span>
         <v-icon>mdi-history</v-icon>
       </v-btn>
 
-      <v-btn to="/">
+      <v-btn to="home" style="height: inherit">
         <span>当前行程</span>
         <v-icon>event_note</v-icon>
       </v-btn>
 
-      <v-btn to="settings">
+      <v-btn to="settings" style="height: inherit">
         <span>设置</span>
         <v-icon>settings</v-icon>
       </v-btn>
