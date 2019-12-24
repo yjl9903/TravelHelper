@@ -40,7 +40,7 @@
       <router-view />
     </v-content>
 
-    <v-bottom-navigation grow app>
+    <v-bottom-navigation grow app :value="active">
       <v-btn to="plan">
         <span>我的计划</span>
         <v-icon>mdi-history</v-icon>
@@ -65,6 +65,7 @@ import { mapState } from "vuex";
 export default {
   name: "App",
   data: () => ({
+    active: 1,
     menuList: [
       {
         name: "批量删除",
