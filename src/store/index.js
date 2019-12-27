@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-// import createPersistedState from "vuex-persistedstate";
+import createPersistedState from "vuex-persistedstate";
 
 Vue.use(Vuex);
 
@@ -52,8 +52,13 @@ export default new Vuex.Store({
     title: "出行小助手"
   },
   mutations: {
+    clear(state) {
+      state.plans = [];
+      state.selected = null;
+    },
     setSelected(state) {
       const date = new Date();
+      state.selected = null;
       for (const p of state.plans) {
         if (p.date.begin <= date && date <= p.date.end) {
           state.selected = p;
@@ -66,12 +71,29 @@ export default new Vuex.Store({
         state.selected = state.plans[i];
       }
     },
-    addPlan() {},
+    addPlan(state, plan) {
+      for (const {
+        date: { begin, end }
+      } of state.plans) {
+        if (Math.max(begin, plan.date.begin) <= Math.min(end, plan.date.end)) {
+          throw new Error("overlap");
+        }
+      }
+      state.plans.push(plan);
+      state.plans.sort((a, b) => {
+        if (a.date.begin < b.date.begin) {
+          return 1;
+        } else if (a.date.begin > b.date.begin) {
+          return -1;
+        }
+        return 0;
+      });
+    },
     setTitle(state, s) {
       state.title = s || "出行小助手";
     }
   },
   actions: {},
-  modules: {}
-  // plugins: [createPersistedState()]
+  modules: {},
+  plugins: [createPersistedState()]
 });

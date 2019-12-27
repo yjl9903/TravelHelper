@@ -24,7 +24,7 @@ Vue.filter("hourMinute", date => {
 Vue.filter("date", date => {
   const y = date.getFullYear();
   const m = date.getMonth() + 1;
-  const d = date.getDate() + 1;
+  const d = date.getDate();
   return `${y} 年 ${m} 月 ${d} 日`;
 });
 
