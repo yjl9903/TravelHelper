@@ -9,12 +9,12 @@
       </v-list-item>
 
       <v-subheader>关于</v-subheader>
-      <v-list-item @click="() => {}">
+      <v-list-item @click="$router.push('/about')">
         <v-list-item-content>
           <v-list-item-title>帮助</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item @click="() => {}">
+      <v-list-item @click="$router.push('/about')">
         <v-list-item-content>
           <v-list-item-title>关于</v-list-item-title>
         </v-list-item-content>
