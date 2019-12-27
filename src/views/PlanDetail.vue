@@ -5,11 +5,6 @@
         <day-card :day="i + 1" :source="item"></day-card>
       </v-col>
     </v-row>
-    <v-row v-else>
-      <v-col cols="12">
-        <p class="text-center">当前没有进行中的日程计划</p>
-      </v-col>
-    </v-row>
   </v-container>
 </template>
 
