@@ -16,7 +16,7 @@
               <span class="title"> {{ item.location }}</span>
             </v-list-item-title>
             <v-list-item-subtitle>
-              {{ i === 0 ? "距离出发地" : "距离上一地点" }} {{ getDistance(i) }}
+              {{ i === 0 ? '距离出发地' : '距离上一地点' }} {{ getDistance(i) }}
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
@@ -27,7 +27,7 @@
 
 <script>
 export default {
-  name: "dayCard",
+  name: 'dayCard',
   props: {
     day: Number,
     source: Array
@@ -35,7 +35,7 @@ export default {
   data: () => ({}),
   methods: {
     getDistance() {
-      return "20 公里";
+      return '20 公里';
     }
   }
 };

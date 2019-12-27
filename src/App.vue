@@ -61,31 +61,31 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex';
 
 export default {
-  name: "App",
+  name: 'App',
   data: () => ({
     active: 1,
     menuList: [
       {
-        name: "批量删除",
-        to: "/"
+        name: '批量删除',
+        to: '/'
       },
       {
-        name: "新的一天",
-        to: "/"
+        name: '新的一天',
+        to: '/'
       }
     ]
   }),
   computed: {
     ...mapState({
-      title: "title",
-      selected: "selected"
+      title: 'title',
+      selected: 'selected'
     })
   },
   created() {
-    this.$store.commit("setSelected");
+    this.$store.commit('setSelected');
   }
 };
 </script>

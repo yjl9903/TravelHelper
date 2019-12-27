@@ -21,24 +21,23 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import AddPlan from "@/components/addplan.vue";
+import { mapState } from 'vuex';
+import AddPlan from '@/components/addplan.vue';
 
 export default {
-  name: "plan",
+  name: 'plan',
   components: {
     AddPlan
   },
   data: () => ({}),
   computed: {
     ...mapState({
-      plans: "plans"
+      plans: 'plans'
     })
   },
   methods: {
     handleClick(i) {
-      this.$store.commit("select", i);
-      this.$router.push("/");
+      this.$router.push(`/plan/${i}`);
     }
   }
 };

@@ -86,7 +86,7 @@ const date = new Date();
 const today = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 
 export default {
-  name: "",
+  name: '',
   data: () => ({
     show: false,
     beginMenu: false,
@@ -98,32 +98,32 @@ export default {
     },
     alert: {
       show: false,
-      text: ""
+      text: ''
     }
   }),
   methods: {
     submit() {
       this.alert.show = false;
       const form = {
-        name: this.plan.name || "新的计划",
+        name: this.plan.name || '新的计划',
         day: [],
         date: {
-          begin: new Date(this.plan.begin + " 0:0"),
-          end: new Date(this.plan.end + " 23:59")
+          begin: new Date(this.plan.begin + ' 0:0'),
+          end: new Date(this.plan.end + ' 23:59')
         }
       };
       if (form.date.begin > form.date.end) {
-        this.alert.text = "开始日期必须在结束日期之前";
+        this.alert.text = '开始日期必须在结束日期之前';
         this.alert.show = true;
         setTimeout(() => {
           this.alert.show = false;
         }, 5000);
       }
       try {
-        this.$store.commit("addPlan", form);
+        this.$store.commit('addPlan', form);
         this.show = false;
       } catch (error) {
-        this.alert.text = "与已有计划重叠";
+        this.alert.text = '与已有计划重叠';
         this.alert.show = true;
         setTimeout(() => {
           this.alert.show = false;

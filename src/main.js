@@ -1,17 +1,18 @@
-import Vue from "vue";
-import App from "./App.vue";
-import router from "./router";
-import store from "./store";
-import vuetify from "./plugins/vuetify";
+import Vue from 'vue';
+import App from './App.vue';
+import router from './router';
+import store from './store';
+import vuetify from './plugins/vuetify';
 
 Vue.config.productionTip = false;
 
 function setTwo(x) {
-  if (x < 10) return "0" + x;
+  if (x < 10) return '0' + x;
   else return x;
 }
 
-Vue.filter("hourMinute", date => {
+Vue.filter('hourMinute', date => {
+  date = new Date(date);
   const h = date.getHours();
   const m = setTwo(date.getMinutes());
   if (h <= 12) {
@@ -21,7 +22,8 @@ Vue.filter("hourMinute", date => {
   }
 });
 
-Vue.filter("date", date => {
+Vue.filter('date', date => {
+  date = new Date(date);
   const y = date.getFullYear();
   const m = date.getMonth() + 1;
   const d = date.getDate();
@@ -33,4 +35,4 @@ new Vue({
   store,
   vuetify,
   render: h => h(App)
-}).$mount("#app");
+}).$mount('#app');

@@ -14,23 +14,23 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import DayCard from "@/components/daycard.vue";
+import { mapState } from 'vuex';
+import DayCard from '@/components/daycard.vue';
 
 export default {
-  name: "home",
+  name: 'home',
   components: {
     DayCard
   },
   data: () => ({}),
   computed: {
     ...mapState({
-      plan: "selected"
+      plan: 'selected'
     })
   },
   mounted() {
     if (this.plan) {
-      this.$store.commit("setTitle", this.plan.name);
+      this.$store.commit('setTitle', this.plan.name);
     }
   }
 };
