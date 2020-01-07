@@ -42,6 +42,7 @@
         </v-menu>
 
         <v-text-field
+          v-if="isEdit"
           label="行程天数"
           v-model="plan.day"
           type="number"
@@ -114,6 +115,9 @@ export default {
         } else {
           this.$store.commit('addPlan', form);
         }
+        this.plan.name = null;
+        this.plan.day = 1;
+        this.plan.begin = today;
         this.show = false;
       } catch (error) {
         this.showAlert('与已有计划重叠');
