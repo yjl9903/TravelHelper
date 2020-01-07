@@ -45,6 +45,7 @@
           label="行程天数"
           v-model="plan.day"
           type="number"
+          :rules="[v => v >= 1 || '天数必须为正数']"
         ></v-text-field>
 
         <v-btn color="primary" @click="submit">确定</v-btn>
@@ -80,11 +81,18 @@ export default {
     }
   }),
   methods: {
+    showAlert(text) {
+      this.alert.text = text;
+      this.alert.show = true;
+      setTimeout(() => {
+        this.alert.show = false;
+      }, 10000);
+    },
     submit() {
       this.alert.show = false;
       const form = {
         name: this.plan.name || '新的计划',
-        day: new Array(this.plan.day).fill([]),
+        day: new Array(Number(this.plan.day)).fill([]),
         begin: new Date(this.plan.begin)
       };
       try {
@@ -107,12 +115,7 @@ export default {
         }
         this.show = false;
       } catch (error) {
-        console.log(error);
-        this.alert.text = '与已有计划重叠';
-        this.alert.show = true;
-        setTimeout(() => {
-          this.alert.show = false;
-        }, 10000);
+        this.showAlert('与已有计划重叠');
       }
     }
   }
