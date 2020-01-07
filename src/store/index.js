@@ -115,6 +115,12 @@ export default new Vuex.Store({
     editPlanPushDay(state, { id }) {
       state.plans[id].day.push([]);
     },
+    editPlanPopDay(state, { id, day }) {
+      if (state.plans[id].day.length === 1) {
+        throw new Error('can not delete first day');
+      }
+      state.plans[id].day.splice(day, 1);
+    },
     setTitle(state, s) {
       state.title = s || '出行小助手';
     }

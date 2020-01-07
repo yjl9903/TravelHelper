@@ -3,9 +3,24 @@
     <div>
       <v-card-title
         class="headline"
-        :style="{ paddingBottom: source.length > 0 ? '0px' : undefined }"
-        >{{ fday | date(false) }}</v-card-title
+        :style="{
+          paddingBottom: source.length > 0 ? '0px' : undefined,
+          justifyContent: 'space-between'
+        }"
       >
+        <span>{{ fday | date(false) }}</span>
+        <v-btn
+          v-if="isEdit"
+          fab
+          small
+          icon
+          dark
+          color="error"
+          @click="deleteDay"
+        >
+          <v-icon dark>delete</v-icon>
+        </v-btn>
+      </v-card-title>
 
       <v-list v-if="source.length > 0" two-line>
         <v-list-item v-for="(item, i) in source" :key="i">
@@ -33,7 +48,8 @@ export default {
   props: {
     day: Number,
     source: Array,
-    base: Date
+    base: Date,
+    isEdit: Boolean
   },
   data: () => ({}),
   computed: {
@@ -42,6 +58,16 @@ export default {
     }
   },
   methods: {
+    deleteDay() {
+      try {
+        this.$store.commit('editPlanPopDay', {
+          id: this.$route.params.id,
+          day: this.day
+        });
+      } catch (error) {
+        this.$parent.openSnackBar('不能删除唯一一天');
+      }
+    },
     getDistance() {
       return '20 公里';
     }

@@ -11,12 +11,29 @@
         </v-banner>
       </v-col>
       <v-col v-for="(item, i) in plan.day" :key="i" cols="12">
-        <day-card :base="plan.begin" :day="i" :source="item"></day-card>
+        <day-card
+          :base="plan.begin"
+          :day="i"
+          :source="item"
+          :isEdit="true"
+        ></day-card>
       </v-col>
       <v-col cols="12" ref="addDayBtn">
         <v-btn block rounded color="primary" @click="addDay">新的一天</v-btn>
       </v-col>
     </v-row>
+
+    <v-snackbar
+      color="error"
+      class="text-center subtitle"
+      v-model="snackbar.show"
+      :timeout="5000"
+    >
+      {{ snackbar.text }}
+      <v-btn text @click="snackbar.show = false">
+        关闭
+      </v-btn>
+    </v-snackbar>
     <add-plan v-if="plan" ref="addplan" :isEdit="true"></add-plan>
   </v-container>
 </template>
@@ -44,9 +61,17 @@ export default {
     id: String
   },
   data: () => ({
-    plan: null
+    plan: null,
+    snackbar: {
+      show: false,
+      text: ''
+    }
   }),
   methods: {
+    openSnackBar(text) {
+      this.snackbar.text = text;
+      this.snackbar.show = true;
+    },
     addDay() {
       this.$store.commit('editPlanPushDay', { id: this.id });
       this.$vuetify.goTo(this.$refs.addDayBtn);
