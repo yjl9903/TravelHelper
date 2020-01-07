@@ -93,7 +93,7 @@ export default {
       const form = {
         name: this.plan.name || '新的计划',
         day: new Array(Number(this.plan.day)).fill([]),
-        begin: new Date(this.plan.begin)
+        begin: new Date(this.plan.begin + ' 00:00')
       };
       try {
         if (this.isEdit) {
