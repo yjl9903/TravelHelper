@@ -4,6 +4,15 @@ import router from './router';
 import store from './store';
 import vuetify from './plugins/vuetify';
 
+import VueAMap from 'vue-amap';
+
+Vue.use(VueAMap);
+VueAMap.initAMapApiLoader({
+  key: '5619d27bc087703e30222b73e1577cdb',
+  plugin: ['AMap.autoComplete', 'AMap.Geolocation', 'AMap.Geocoder'],
+  v: '1.4.4'
+});
+
 Vue.config.productionTip = false;
 
 function setTwo(x) {
@@ -32,6 +41,16 @@ Vue.filter('date', (date, haveYear = true) => {
 
 Vue.filter('endDate', (date, len) => {
   return new Date(new Date(date).getTime() + len * 24 * 60 * 60 * 1000 - 1);
+});
+
+Vue.filter('formatPos', v => {
+  const { formattedAddress, addressComponent } = v;
+  let len = 0;
+  len += addressComponent.province.length;
+  len += addressComponent.city.length;
+  len += addressComponent.district.length;
+  len += addressComponent.township.length;
+  return formattedAddress.slice(len, formattedAddress.length);
 });
 
 new Vue({

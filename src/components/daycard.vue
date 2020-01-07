@@ -9,17 +9,22 @@
         }"
       >
         <span>{{ fday | date(false) }}</span>
-        <v-btn
-          v-if="isEdit"
-          fab
-          small
-          icon
-          dark
-          color="error"
-          @click="deleteDay"
-        >
-          <v-icon dark>delete</v-icon>
-        </v-btn>
+        <div>
+          <v-btn v-if="isEdit" fab small icon @click="deleteDay">
+            <v-icon>edit</v-icon>
+          </v-btn>
+          <v-btn
+            v-if="isEdit"
+            fab
+            small
+            icon
+            dark
+            color="error"
+            @click="deleteDay"
+          >
+            <v-icon dark>delete</v-icon>
+          </v-btn>
+        </div>
       </v-card-title>
 
       <v-list v-if="source.length > 0" two-line>

@@ -35,7 +35,38 @@ export default new Vuex.Store({
             }
           ]
         ],
-        begin: new Date('2020/1/6')
+        begin: new Date('2020/1/6'),
+        beginPos: {
+          addressComponent: {
+            citycode: '025',
+            adcode: '320102',
+            businessAreas: [
+              {
+                name: '孝陵卫',
+                id: '320102',
+                location: {
+                  P: 32.030621,
+                  O: 118.85895299999999,
+                  lng: 118.858953,
+                  lat: 32.030621
+                }
+              }
+            ],
+            neighborhoodType: '',
+            neighborhood: '',
+            building: '',
+            buildingType: '',
+            street: '孝陵卫街',
+            streetNumber: '200号614幢',
+            province: '江苏省',
+            city: '南京市',
+            district: '玄武区',
+            township: '孝陵卫街道'
+          },
+          formattedAddress:
+            '江苏省南京市玄武区孝陵卫街道孝陵卫街200号614幢南京理工大学',
+          lnglat: [118.857344, 32.022667]
+        }
       }
     ],
     selected: {
@@ -88,29 +119,24 @@ export default new Vuex.Store({
       });
     },
     editPlan(state, { id, plan }) {
+      id = Number(id);
       plan = {
         ...state.plans[id],
         ...plan
       };
-      state.plans.splice(id, 1);
+      let c = 0;
       const st = plan.begin,
         ed = new Date(st.getTime() + plan.day.length * 24 * 60 * 60 * 1000 - 1);
       for (const { begin, day } of state.plans) {
+        if (c === id) continue;
         const l = new Date(begin),
           r = new Date(l.getTime() + day.length * 24 * 60 * 60 * 1000 - 1);
         if (Math.max(l, st) <= Math.min(r, ed)) {
           throw new Error('overlap');
         }
+        c++;
       }
-      state.plans.push(plan);
-      state.plans.sort((a, b) => {
-        if (a.begin < b.begin) {
-          return 1;
-        } else if (a.begin > b.begin) {
-          return -1;
-        }
-        return 0;
-      });
+      state.plans[id] = plan;
     },
     editPlanPushDay(state, { id }) {
       state.plans[id].day.push([]);

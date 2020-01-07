@@ -4,8 +4,17 @@
       <v-col cols="12">
         <v-banner>
           <p>开始日期：{{ plan.begin | date }}</p>
-          <p class="mb-0 d-inline-block">行程天数：{{ plan.day.length }} 天</p>
+          <p :class="[plan.beginPos ? undefined : 'mb-0']">
+            行程天数：{{ plan.day.length }} 天
+          </p>
+          <p v-if="plan.beginPos" class="mb-0">
+            出发地点：{{ plan.beginPos | formatPos }}
+          </p>
           <template v-slot:actions>
+            <select-pos
+              btnText="选择出发地点"
+              @confirm="onPosConfirm"
+            ></select-pos>
             <v-btn @click="edit">编辑</v-btn>
           </template>
         </v-banner>
@@ -41,6 +50,7 @@
 <script>
 // import { mapState } from 'vuex';
 import AddPlan from '@/components/addplan.vue';
+import SelectPos from '@/components/selectPos.vue';
 import DayCard from '@/components/daycard.vue';
 
 const fDate = date => {
@@ -55,7 +65,8 @@ export default {
   name: 'home',
   components: {
     DayCard,
-    AddPlan
+    AddPlan,
+    SelectPos
   },
   props: {
     id: String
@@ -85,6 +96,10 @@ export default {
     refresh() {
       this.plan = this.$store.state.plans[this.id];
       this.$store.commit('setTitle', this.plan.name);
+    },
+    onPosConfirm(obj) {
+      this.$store.commit('editPlan', { id: this.id, plan: { beginPos: obj } });
+      this.refresh();
     }
   },
   mounted() {
