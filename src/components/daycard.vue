@@ -1,11 +1,13 @@
 <template>
   <v-card>
     <div>
-      <v-card-title class="headline" style="padding-bottom: 0px;"
-        >第 {{ day }} 天</v-card-title
+      <v-card-title
+        class="headline"
+        :style="{ paddingBottom: source.length > 0 ? '0px' : undefined }"
+        >{{ fday | date(false) }}</v-card-title
       >
 
-      <v-list two-line>
+      <v-list v-if="source.length > 0" two-line>
         <v-list-item v-for="(item, i) in source" :key="i">
           <v-list-item-content>
             <v-list-item-title>
@@ -30,9 +32,15 @@ export default {
   name: 'dayCard',
   props: {
     day: Number,
-    source: Array
+    source: Array,
+    base: Date
   },
   data: () => ({}),
+  computed: {
+    fday() {
+      return new Date(this.base.getTime() + this.day * 24 * 60 * 60 * 1000);
+    }
+  },
   methods: {
     getDistance() {
       return '20 公里';

@@ -18,7 +18,7 @@
 
       <v-spacer></v-spacer>
 
-      <v-menu left bottom>
+      <!-- <v-menu left bottom>
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on">
             <v-icon>mdi-dots-vertical</v-icon>
@@ -34,7 +34,7 @@
             <v-list-item-title>{{ item.name }}</v-list-item-title>
           </v-list-item>
         </v-list>
-      </v-menu>
+      </v-menu> -->
     </v-app-bar>
 
     <v-content>
@@ -42,7 +42,7 @@
     </v-content>
 
     <v-bottom-navigation fixed grow app :value="active">
-      <v-btn to="plan" style="height: inherit">
+      <v-btn to="/plan" style="height: inherit">
         <span>我的计划</span>
         <v-icon>mdi-history</v-icon>
       </v-btn>
@@ -52,7 +52,7 @@
         <v-icon>event_note</v-icon>
       </v-btn>
 
-      <v-btn to="settings" style="height: inherit">
+      <v-btn to="/settings" style="height: inherit">
         <span>设置</span>
         <v-icon>settings</v-icon>
       </v-btn>
@@ -83,9 +83,6 @@ export default {
       title: 'title',
       selected: 'selected'
     })
-  },
-  created() {
-    this.$store.commit('setSelected');
   }
 };
 </script>

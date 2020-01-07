@@ -44,6 +44,7 @@ export default {
     confirmDelete() {
       this.$store.commit('clear');
       window.localStorage.removeItem('vuex');
+      this.dialog = false;
     },
     clearStorage() {
       this.dialog = true;

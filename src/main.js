@@ -22,12 +22,16 @@ Vue.filter('hourMinute', date => {
   }
 });
 
-Vue.filter('date', date => {
+Vue.filter('date', (date, haveYear = true) => {
   date = new Date(date);
   const y = date.getFullYear();
   const m = date.getMonth() + 1;
   const d = date.getDate();
-  return `${y} 年 ${m} 月 ${d} 日`;
+  return (haveYear ? `${y} 年 ` : '') + `${m} 月 ${d} 日`;
+});
+
+Vue.filter('endDate', (date, len) => {
+  return new Date(new Date(date).getTime() + len * 24 * 60 * 60 * 1000 - 1);
 });
 
 new Vue({

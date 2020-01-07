@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import createPersistedState from 'vuex-persistedstate';
+// import createPersistedState from 'vuex-persistedstate';
 
 Vue.use(Vuex);
 
@@ -35,19 +35,13 @@ export default new Vuex.Store({
             }
           ]
         ],
-        date: {
-          begin: new Date('2019-12-23'),
-          end: new Date('2019-12-26')
-        }
+        begin: new Date('2020-1-6')
       }
     ],
     selected: {
       name: '',
       day: [],
-      date: {
-        begin: null,
-        end: null
-      }
+      begin: null
     },
     title: '出行小助手'
   },
@@ -60,9 +54,9 @@ export default new Vuex.Store({
       const date = new Date();
       state.selected = null;
       for (const p of state.plans) {
-        p.date.begin = new Date(p.date.begin);
-        p.date.end = new Date(p.date.end);
-        if (p.date.begin <= date && date <= p.date.end) {
+        const l = new Date(p.begin),
+          r = new Date(l.getTime() + p.day.length * 24 * 60 * 60 * 1000 - 1);
+        if (l <= date && date <= r) {
           state.selected = p;
           break;
         }
@@ -74,18 +68,45 @@ export default new Vuex.Store({
       }
     },
     addPlan(state, plan) {
-      for (const {
-        date: { begin, end }
-      } of state.plans) {
-        if (Math.max(begin, plan.date.begin) <= Math.min(end, plan.date.end)) {
+      const st = plan.begin,
+        ed = new Date(st.getTime() + plan.day.length * 24 * 60 * 60 * 1000 - 1);
+      for (const { begin, day } of state.plans) {
+        const l = new Date(begin),
+          r = new Date(l.getTime() + day.length * 24 * 60 * 60 * 1000 - 1);
+        if (Math.max(l, st) <= Math.min(r, ed)) {
           throw new Error('overlap');
         }
       }
       state.plans.push(plan);
       state.plans.sort((a, b) => {
-        if (a.date.begin < b.date.begin) {
+        if (a.begin < b.begin) {
           return 1;
-        } else if (a.date.begin > b.date.begin) {
+        } else if (a.begin > b.begin) {
+          return -1;
+        }
+        return 0;
+      });
+    },
+    editPlan(state, { id, plan }) {
+      plan = {
+        ...state.plans[id],
+        ...plan
+      };
+      state.plans.splice(id, 1);
+      const st = plan.begin,
+        ed = new Date(st.getTime() + plan.day.length * 24 * 60 * 60 * 1000 - 1);
+      for (const { begin, day } of state.plans) {
+        const l = new Date(begin),
+          r = new Date(l.getTime() + day.length * 24 * 60 * 60 * 1000 - 1);
+        if (Math.max(l, st) <= Math.min(r, ed)) {
+          throw new Error('overlap');
+        }
+      }
+      state.plans.push(plan);
+      state.plans.sort((a, b) => {
+        if (a.begin < b.begin) {
+          return 1;
+        } else if (a.begin > b.begin) {
           return -1;
         }
         return 0;
@@ -97,5 +118,7 @@ export default new Vuex.Store({
   },
   actions: {},
   modules: {},
-  plugins: [createPersistedState()]
+  plugins: [
+    // createPersistedState()
+  ]
 });

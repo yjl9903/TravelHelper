@@ -1,8 +1,14 @@
 <template>
   <v-container class="home">
     <v-row dense v-if="plan">
+      <!-- <v-col cols="12">
+        <v-banner two-line transition="slide-y-transition">
+          <p>开始日期：{{ plan.date.begin | date }}</p>
+          <p class="mb-0">结束日期：{{ plan.date.end | date }}</p>
+        </v-banner>
+      </v-col> -->
       <v-col v-for="(item, i) in plan.day" :key="i" cols="12">
-        <day-card :day="i + 1" :source="item"></day-card>
+        <day-card :base="plan.begin" :day="i" :source="item"></day-card>
       </v-col>
     </v-row>
     <v-row v-else>
@@ -29,6 +35,7 @@ export default {
     })
   },
   mounted() {
+    this.$store.commit('setSelected');
     if (this.plan) {
       this.$store.commit('setTitle', this.plan.name);
     }
