@@ -13,29 +13,29 @@ export default new Vuex.Store({
           [
             {
               location: '总统府',
-              begin: new Date('2019-12-23 8:30'),
-              end: new Date('2019-12-23 11:00')
+              begin: new Date('2020/1/6 8:30'),
+              end: new Date('2020/1/6 11:00')
             },
             {
               location: '明故宫',
-              begin: new Date('2019-12-23 12:00'),
-              end: new Date('2019-12-23 16:00')
+              begin: new Date('2020/1/6 12:00'),
+              end: new Date('2020/1/6 16:00')
             }
           ],
           [
             {
               location: '明故宫',
-              begin: new Date('2019-12-23 8:30'),
-              end: new Date('2019-12-23 11:00')
+              begin: new Date('2020/1/7 8:30'),
+              end: new Date('2020/1/7 11:00')
             },
             {
               location: '总统府',
-              begin: new Date('2019-12-23 12:00'),
-              end: new Date('2019-12-23 16:00')
+              begin: new Date('2020/1/7 12:00'),
+              end: new Date('2020/1/7 16:00')
             }
           ]
         ],
-        begin: new Date('2020-1-6')
+        begin: new Date('2020/1/6')
       }
     ],
     selected: {
