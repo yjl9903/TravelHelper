@@ -42,6 +42,9 @@ export default {
     handleClick(i) {
       this.$router.push(`/plan/${i}`);
     }
+  },
+  mounted() {
+    this.$vuetify.goTo(this);
   }
 };
 </script>
