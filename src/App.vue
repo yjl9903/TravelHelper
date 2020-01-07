@@ -14,7 +14,7 @@
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
 
-      <v-toolbar-title>{{ title }}</v-toolbar-title>
+      <v-toolbar-title class="pl-0">{{ title }}</v-toolbar-title>
 
       <v-spacer></v-spacer>
 
