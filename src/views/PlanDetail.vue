@@ -13,6 +13,9 @@
       <v-col v-for="(item, i) in plan.day" :key="i" cols="12">
         <day-card :base="plan.begin" :day="i" :source="item"></day-card>
       </v-col>
+      <v-col cols="12" ref="addDayBtn">
+        <v-btn block rounded color="primary" @click="addDay">新的一天</v-btn>
+      </v-col>
     </v-row>
     <add-plan v-if="plan" ref="addplan" :isEdit="true"></add-plan>
   </v-container>
@@ -37,10 +40,17 @@ export default {
     DayCard,
     AddPlan
   },
+  props: {
+    id: String
+  },
   data: () => ({
     plan: null
   }),
   methods: {
+    addDay() {
+      this.$store.commit('editPlanPushDay', { id: this.id });
+      this.$vuetify.goTo(this.$refs.addDayBtn);
+    },
     edit() {
       this.$refs.addplan.plan.name = this.plan.name;
       this.$refs.addplan.plan.begin = fDate(this.plan.begin);
@@ -48,7 +58,7 @@ export default {
       this.$refs.addplan.show = true;
     },
     refresh() {
-      this.plan = this.$store.state.plans[this.$route.params.id];
+      this.plan = this.$store.state.plans[this.id];
       this.$store.commit('setTitle', this.plan.name);
     }
   },

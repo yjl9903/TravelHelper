@@ -40,7 +40,8 @@ const routes = [
   },
   {
     path: '/plan/:id',
-    component: () => import('../views/PlanDetail.vue')
+    component: () => import('../views/PlanDetail.vue'),
+    props: true
   }
 ];
 

@@ -112,6 +112,9 @@ export default new Vuex.Store({
         return 0;
       });
     },
+    editPlanPushDay(state, { id }) {
+      state.plans[id].day.push([]);
+    },
     setTitle(state, s) {
       state.title = s || '出行小助手';
     }
