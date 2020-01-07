@@ -1,3 +1,5 @@
 module.exports = {
-  lintOnSave: false
+  productionSourceMap: false,
+  lintOnSave: false,
+  transpileDependencies: ['vuetify']
 };
