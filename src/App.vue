@@ -83,6 +83,9 @@ export default {
       title: 'title',
       selected: 'selected'
     })
+  },
+  created() {
+    this.$store.commit('formatDate');
   }
 };
 </script>

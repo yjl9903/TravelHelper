@@ -58,7 +58,7 @@ const fDate = date => {
   const y = date.getFullYear();
   const m = date.getMonth() + 1;
   const d = date.getDate();
-  return `${y}/${m}/${d}`;
+  return `${y}-${m < 10 ? '0' : ''}${m}-${d < 10 ? '0' : ''}${d}`;
 };
 
 export default {
@@ -100,11 +100,6 @@ export default {
     onPosConfirm(obj) {
       this.$store.commit('editPlan', { id: this.id, plan: { beginPos: obj } });
       this.refresh();
-    }
-  },
-  mounted() {
-    if (this.plan) {
-      this.$store.commit('setTitle', this.plan.name);
     }
   },
   beforeRouteEnter(to, from, next) {

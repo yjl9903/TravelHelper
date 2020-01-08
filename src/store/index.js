@@ -1,8 +1,18 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-// import createPersistedState from 'vuex-persistedstate';
+import dayjs from '../plugins/dayjs';
+import createPersistedState from 'vuex-persistedstate';
 
 Vue.use(Vuex);
+
+function cmp(a, b) {
+  if (a.begin.isBefore(b.begin)) {
+    return 1;
+  } else if (a.begin.isAfter(b.begin)) {
+    return -1;
+  }
+  return 0;
+}
 
 export default new Vuex.Store({
   state: {
@@ -81,42 +91,46 @@ export default new Vuex.Store({
       state.plans = [];
       state.selected = null;
     },
+    formatDate(state) {
+      for (const plan of state.plans) {
+        plan.begin = dayjs(plan.begin);
+        for (const day of plan.day) {
+          for (const ev of day) {
+            ev.begin = dayjs(ev.begin);
+            ev.end = dayjs(ev.end);
+          }
+        }
+      }
+    },
     setSelected(state) {
-      const date = new Date();
+      const date = dayjs();
       state.selected = null;
       for (const p of state.plans) {
-        const l = new Date(p.begin),
-          r = new Date(l.getTime() + p.day.length * 24 * 60 * 60 * 1000 - 1);
-        if (l <= date && date <= r) {
+        if (
+          !p.begin.isAfter(date) &&
+          !date.isAfter(p.begin.addDay(p.day.length))
+        ) {
           state.selected = p;
           break;
         }
       }
     },
-    select(state, i) {
-      if (i < state.plans.length) {
-        state.selected = state.plans[i];
-      }
-    },
     addPlan(state, plan) {
-      const st = plan.begin,
-        ed = new Date(st.getTime() + plan.day.length * 24 * 60 * 60 * 1000 - 1);
-      for (const { begin, day } of state.plans) {
-        const l = new Date(begin),
-          r = new Date(l.getTime() + day.length * 24 * 60 * 60 * 1000 - 1);
-        if (Math.max(l, st) <= Math.min(r, ed)) {
+      const st = dayjs(plan.begin);
+      const ed = st.addDay(plan.day.length);
+      for (const {
+        begin,
+        day: { length }
+      } of state.plans) {
+        if (
+          !dayjs.max(begin, st).isAfter(dayjs.min(begin.addDay(length), ed))
+        ) {
           throw new Error('overlap');
         }
       }
+      plan.begin = st;
       state.plans.push(plan);
-      state.plans.sort((a, b) => {
-        if (a.begin < b.begin) {
-          return 1;
-        } else if (a.begin > b.begin) {
-          return -1;
-        }
-        return 0;
-      });
+      state.plans.sort(cmp);
     },
     editPlan(state, { id, plan }) {
       id = Number(id);
@@ -125,18 +139,25 @@ export default new Vuex.Store({
         ...plan
       };
       let c = 0;
-      const st = plan.begin,
-        ed = new Date(st.getTime() + plan.day.length * 24 * 60 * 60 * 1000 - 1);
-      for (const { begin, day } of state.plans) {
-        if (c === id) continue;
-        const l = new Date(begin),
-          r = new Date(l.getTime() + day.length * 24 * 60 * 60 * 1000 - 1);
-        if (Math.max(l, st) <= Math.min(r, ed)) {
+      const st = dayjs(plan.begin);
+      const ed = st.addDay(plan.day.length);
+      for (const {
+        begin,
+        day: { length }
+      } of state.plans) {
+        if (id === c) continue;
+        if (
+          !dayjs.max(begin, st).isAfter(dayjs.min(begin.addDay(length), ed))
+        ) {
           throw new Error('overlap');
         }
         c++;
       }
+      plan.begin = st;
       state.plans[id] = plan;
+    },
+    deletePlan(state, id) {
+      state.plans.splice(id, 1);
     },
     editPlanPushDay(state, { id }) {
       state.plans[id].day.push([]);
@@ -153,7 +174,5 @@ export default new Vuex.Store({
   },
   actions: {},
   modules: {},
-  plugins: [
-    // createPersistedState()
-  ]
+  plugins: [createPersistedState()]
 });

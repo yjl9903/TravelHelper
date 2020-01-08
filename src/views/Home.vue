@@ -8,7 +8,7 @@
         </v-banner>
       </v-col> -->
       <v-col v-for="(item, i) in plan.day" :key="i" cols="12">
-        <day-card :base="plan.begin" :day="i" :source="item"></day-card>
+        <day-card :base="begin" :day="i" :source="item"></day-card>
       </v-col>
     </v-row>
     <v-row v-else>
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import dayjs from 'dayjs';
 import { mapState } from 'vuex';
 import DayCard from '@/components/daycard.vue';
 
@@ -31,7 +32,8 @@ export default {
   data: () => ({}),
   computed: {
     ...mapState({
-      plan: 'selected'
+      plan: 'selected',
+      begin: ({ selected: { begin } }) => dayjs(begin)
     })
   },
   mounted() {

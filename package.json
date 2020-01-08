@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "core-js": "^3.4.4",
+    "dayjs": "^1.8.19",
     "material-design-icons-iconfont": "^5.0.1",
     "vue": "^2.6.10",
     "vue-amap": "^0.5.10",

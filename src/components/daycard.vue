@@ -8,7 +8,7 @@
           justifyContent: 'space-between'
         }"
       >
-        <span>{{ fday | date(false) }}</span>
+        <span>{{ base.add(day, 'day').format('M 月 D 日') }}</span>
         <div>
           <v-btn v-if="isEdit" fab small icon @click="deleteDay">
             <v-icon>edit</v-icon>
@@ -48,20 +48,17 @@
 </template>
 
 <script>
+import dayjs from 'dayjs';
+
 export default {
   name: 'dayCard',
   props: {
     day: Number,
     source: Array,
-    base: Date,
+    base: dayjs,
     isEdit: Boolean
   },
   data: () => ({}),
-  computed: {
-    fday() {
-      return new Date(this.base.getTime() + this.day * 24 * 60 * 60 * 1000);
-    }
-  },
   methods: {
     deleteDay() {
       try {

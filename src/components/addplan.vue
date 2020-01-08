@@ -34,7 +34,7 @@
             ></v-text-field>
           </template>
           <v-date-picker
-            color="red lighten-1"
+            color="primary"
             locale="zh-cn"
             v-model="plan.begin"
             @input="beginMenu = false"
@@ -50,6 +50,21 @@
         ></v-text-field>
 
         <v-btn color="primary" @click="submit">确定</v-btn>
+        <v-btn
+          v-if="isEdit"
+          class="ml-2"
+          color="error"
+          @click="$refs.confirm.open()"
+          >{{ isEdit ? '删除计划' : '取消' }}</v-btn
+        >
+        <confirm-dialog
+          v-if="isEdit"
+          ref="confirm"
+          text="确认删除？"
+          @confirm="
+            $store.commit('deletePlan', $route.params.id), $router.push('/plan')
+          "
+        ></confirm-dialog>
 
         <v-alert class="text-left mt-3" v-show="alert.show" type="error">{{
           alert.text
@@ -60,11 +75,16 @@
 </template>
 
 <script>
+import ConfirmDialog from './confirm';
+
 const date = new Date();
 const today = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
 
 export default {
   name: 'add-plan',
+  components: {
+    ConfirmDialog
+  },
   props: {
     isEdit: Boolean
   },
@@ -114,12 +134,14 @@ export default {
           this.$parent.refresh();
         } else {
           this.$store.commit('addPlan', form);
+          this.$vuetify.goTo(0);
         }
         this.plan.name = null;
         this.plan.day = 1;
         this.plan.begin = today;
         this.show = false;
       } catch (error) {
+        console.log(error);
         this.showAlert('与已有计划重叠');
       }
     }
