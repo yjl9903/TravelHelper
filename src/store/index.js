@@ -94,6 +94,21 @@ export default new Vuex.Store({
     },
     title: '出行小助手'
   },
+  getters: {
+    getPlanDayID(state) {
+      return (id, day, plan) => {
+        const st = plan.begin;
+        let c = 0;
+        for (const p of state.plans[id].day[day]) {
+          if (st.isSame(p.begin)) {
+            return c;
+          }
+          c++;
+        }
+        throw new Error('not found');
+      };
+    }
+  },
   mutations: {
     clear(state) {
       state.plans = [];
