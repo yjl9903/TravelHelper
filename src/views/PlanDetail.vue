@@ -11,10 +11,7 @@
             出发地点：{{ plan.beginPos | formatPos }}
           </p>
           <template v-slot:actions>
-            <select-pos
-              btnText="选择出发地点"
-              @confirm="onPosConfirm"
-            ></select-pos>
+            <v-btn @click="selBeginPos">选择出发地点</v-btn>
             <v-btn @click="edit">编辑</v-btn>
           </template>
         </v-banner>
@@ -31,6 +28,12 @@
         <v-btn block rounded color="primary" @click="addDay">新的一天</v-btn>
       </v-col>
     </v-row>
+
+    <select-pos
+      ref="selectPos"
+      :hideBtn="true"
+      @confirm="onPosConfirm"
+    ></select-pos>
 
     <v-snackbar
       color="error"
@@ -102,6 +105,13 @@ export default {
       this.snackbar.show = false;
       this.plan = this.$store.state.plans[this.id];
       this.$store.commit('setTitle', this.plan.name);
+    },
+    selBeginPos() {
+      if (this.plan.beginPos) {
+        this.$refs.selectPos.open(this.plan.beginPos.lnglat);
+      } else {
+        this.$refs.selectPos.open();
+      }
     },
     onPosConfirm(obj) {
       this.$store.commit('editPlan', { id: this.id, plan: { beginPos: obj } });

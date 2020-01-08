@@ -23,7 +23,7 @@
 
       <v-divider></v-divider>
 
-      <v-list class="pt-0" v-if="source.length > 0" two-line>
+      <v-list class="pt-0" v-if="source.length > 0">
         <v-list-item v-for="(item, i) in source" :key="i">
           <v-list-item-content>
             <v-list-item-title>
@@ -31,12 +31,23 @@
                 >{{ item.begin | hourMinute }} ~
                 {{ item.end | hourMinute }}</span
               >
-              <span class="title"> {{ item.name }}</span>
             </v-list-item-title>
+            <v-list-item-subtitle style="display: flex; align-item: center;">
+              <span class="title black--text"> {{ item.name }}</span>
+              <v-chip v-if="!item.position" color="warning" class="ml-3"
+                >暂无位置信息</v-chip
+              >
+            </v-list-item-subtitle>
             <v-list-item-subtitle>
               {{ i === 0 ? '距离出发地' : '距离上一地点' }} {{ getDistance(i) }}
             </v-list-item-subtitle>
           </v-list-item-content>
+
+          <v-list-item-action>
+            <v-btn icon>
+              <v-icon>map</v-icon>
+            </v-btn>
+          </v-list-item-action>
         </v-list-item>
       </v-list>
     </div>

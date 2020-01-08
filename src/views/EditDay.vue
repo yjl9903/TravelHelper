@@ -15,8 +15,11 @@
                 {{ item.end | hourMinute }}</span
               >
             </v-list-item-title>
-            <v-list-item-subtitle>
+            <v-list-item-subtitle style="display: flex; align-item: center;">
               <span class="title black--text"> {{ item.name }}</span>
+              <v-chip v-if="!item.position" color="warning" class="ml-3"
+                >暂无位置信息</v-chip
+              >
             </v-list-item-subtitle>
             <v-list-item-subtitle>
               {{ i === 0 ? '距离出发地' : '距离上一地点' }} {{ 20 }}
