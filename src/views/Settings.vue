@@ -49,6 +49,9 @@ export default {
     clearStorage() {
       this.dialog = true;
     }
+  },
+  mounted() {
+    this.$vuetify.goTo(this);
   }
 };
 </script>

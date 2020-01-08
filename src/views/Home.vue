@@ -37,6 +37,7 @@ export default {
     })
   },
   mounted() {
+    this.$vuetify.goTo(this);
     this.$store.commit('setSelected');
     if (this.plan) {
       this.$store.commit('setTitle', this.plan.name);
