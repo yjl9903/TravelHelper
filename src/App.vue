@@ -14,7 +14,15 @@
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
 
-      <v-toolbar-title class="pl-0">{{ title }}</v-toolbar-title>
+      <v-toolbar-title class="pl-0 d-flex align-center">
+        <v-icon
+          v-if="selected && selected.star && title === selected.name"
+          class="mr-1"
+          color="yellow darken-1"
+          >star</v-icon
+        >
+        <span>{{ title }}</span>
+      </v-toolbar-title>
 
       <v-spacer></v-spacer>
 
