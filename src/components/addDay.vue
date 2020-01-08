@@ -1,13 +1,7 @@
 <template>
   <v-bottom-sheet v-model="show" hide-overlay>
     <template v-slot:activator="{ on }">
-      <v-btn
-        block
-        rounded
-        class="mt-2"
-        color="primary"
-        v-on="on"
-        @click="isEdit = false"
+      <v-btn block rounded class="mt-2" color="primary" v-on="on" @click="init"
         >新的日程</v-btn
       >
     </template>
@@ -108,6 +102,12 @@ export default {
     pid: null
   }),
   methods: {
+    init() {
+      this.isEdit = false;
+      this.plan.name = '';
+      this.plan.begin = null;
+      this.plan.end = null;
+    },
     showAlert(text) {
       this.alert.text = text;
       this.alert.show = true;
@@ -134,14 +134,12 @@ export default {
           this.$store.commit('editPlanEditDayPlan', {
             id: this.id,
             day: this.day,
-            pid: this.pid
+            pid: this.pid,
+            plan: form
           });
           this.show = false;
           this.isEdit = false;
         }
-        this.plan.name = '';
-        this.plan.begin = null;
-        this.plan.end = null;
       } catch (err) {
         if (err.message[err.message.length - 1] === '！') {
           this.showAlert(err.message);

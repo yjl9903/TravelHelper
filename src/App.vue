@@ -18,7 +18,15 @@
 
       <v-spacer></v-spacer>
 
-      <!-- <v-menu left bottom>
+      <v-btn
+        v-if="$route.path === '/' && selected"
+        icon
+        :to="`/plan/${selected.id}`"
+      >
+        <v-icon>edit</v-icon>
+      </v-btn>
+
+      <!-- <v-menu left bottom v-if="$route.path === '/'">
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on">
             <v-icon>mdi-dots-vertical</v-icon>

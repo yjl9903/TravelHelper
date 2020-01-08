@@ -113,14 +113,17 @@ export default new Vuex.Store({
     setSelected(state) {
       const date = dayjs();
       state.selected = null;
+      let c = 0;
       for (const p of state.plans) {
         if (
           !p.begin.isAfter(date) &&
           !date.isAfter(p.begin.addDay(p.day.length))
         ) {
           state.selected = p;
+          state.selected.id = c;
           break;
         }
+        c++;
       }
     },
     addPlan(state, plan) {
@@ -223,7 +226,45 @@ export default new Vuex.Store({
       state.plans[id].day[day].push(plan);
       state.plans[id].day[day].sort(cmpTime);
     },
-    // editPlanEditDayPlan(state, { id, day, pid, plan }) {},
+    editPlanEditDayPlan(state, { id, day, pid, plan }) {
+      plan = {
+        ...state.plans[id].day[day][pid],
+        ...plan
+      };
+      pid = Number(pid);
+      if (!plan.begin) {
+        throw new Error('开始时间不能为空！');
+      } else if (!plan.end) {
+        throw new Error('结束时间不能为空！');
+      }
+      const dayplan = state.plans[id].day[day];
+      const time = dayjs(state.plans[id].begin).add(day, 'day');
+      const st = time
+        .hour(Number(plan.begin.substr(0, 2)))
+        .minute(Number(plan.begin.substr(3, 2)));
+      const ed = time
+        .hour(Number(plan.end.substr(0, 2)))
+        .minute(Number(plan.end.substr(3, 2)));
+      if (st.isAfter(ed)) {
+        throw new Error('开始时间不能晚于结束时间！');
+      }
+      let c = 0;
+      for (const p of dayplan) {
+        if (pid === c) continue;
+        const l = time.hour(p.begin.hour()).minute(p.begin.minute());
+        const r = time.hour(p.end.hour()).minute(p.end.minute());
+        if (!dayjs.max(l, st).isAfter(dayjs.min(r, ed))) {
+          throw new Error('与已有时间安排重叠！');
+        }
+        p.begin = l;
+        p.end = r;
+        c++;
+      }
+      plan.begin = st;
+      plan.end = ed;
+      state.plans[id].day[day][pid] = plan;
+      state.plans[id].day[day].sort(cmpTime);
+    },
     editPlanPopDayPlan(state, { id, day, pid }) {
       state.plans[id].day[day].splice(pid, 1);
     },
