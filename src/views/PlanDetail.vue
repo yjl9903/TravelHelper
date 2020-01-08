@@ -88,12 +88,14 @@ export default {
       this.$vuetify.goTo(this.$refs.addDayBtn);
     },
     edit() {
+      this.snackbar.show = false;
       this.$refs.addplan.plan.name = this.plan.name;
       this.$refs.addplan.plan.begin = fDate(this.plan.begin);
       this.$refs.addplan.plan.day = this.plan.day.length;
       this.$refs.addplan.show = true;
     },
     refresh() {
+      this.snackbar.show = false;
       this.plan = this.$store.state.plans[this.id];
       this.$store.commit('setTitle', this.plan.name);
     },
