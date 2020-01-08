@@ -24,7 +24,7 @@
           </v-list-item-content>
 
           <v-list-item-action>
-            <v-btn icon>
+            <v-btn icon @click="selPos(i)">
               <v-icon>map</v-icon>
             </v-btn>
             <v-btn icon @click="editPos(i)">
@@ -38,16 +38,23 @@
       </template>
     </v-list>
     <add-day ref="addDay" :id="Number(id)" :day="Number(day)"></add-day>
+    <select-pos
+      ref="selectPos"
+      :hideBtn="true"
+      @confirm="handleConfirm"
+    ></select-pos>
   </v-container>
 </template>
 
 <script>
+import SelectPos from '@/components/selectPos.vue';
 import AddDay from '@/components/addDay.vue';
 
 export default {
   name: 'edit-day',
   components: {
-    AddDay
+    AddDay,
+    SelectPos
   },
   props: {
     id: String,
@@ -60,7 +67,8 @@ export default {
   },
   data: () => ({
     plan: null,
-    dayplan: null
+    dayplan: null,
+    selected: null
   }),
   methods: {
     delPos(pid) {
@@ -77,7 +85,12 @@ export default {
         this.dayplan[pid].begin,
         this.dayplan[pid].end
       );
-    }
+    },
+    selPos(pid) {
+      this.selected = Number(pid);
+      this.$refs.selectPos.open();
+    },
+    handleConfirm() {}
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {

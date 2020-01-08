@@ -1,7 +1,7 @@
 <template>
   <v-bottom-sheet v-model="show" hide-overlay>
     <template v-slot:activator="{ on }">
-      <v-btn v-on="on">
+      <v-btn v-on="on" v-if="!hideBtn">
         {{ btnText || '选择地点' }}
       </v-btn>
     </template>
@@ -49,7 +49,9 @@
 export default {
   name: 'select-pos',
   props: {
-    btnText: String
+    btnText: String,
+    hideBtn: Boolean,
+    notfirstLoc: Boolean
   },
   data: () => ({
     show: false,
@@ -68,6 +70,7 @@ export default {
           extensions: 'all',
           events: {
             init(o) {
+              if (!that.notfirstLoc) return;
               o.getCurrentPosition((status, result) => {
                 if (result && result.position) {
                   that.center[0] = result.position.lng;
@@ -107,6 +110,11 @@ export default {
     }
   },
   methods: {
+    open() {
+      this.markers.splice(0);
+      this.selected = null;
+      this.show = true;
+    },
     onSearchResult(pois) {
       let latSum = 0;
       let lngSum = 0;

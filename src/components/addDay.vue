@@ -130,6 +130,7 @@ export default {
             plan: form
           });
           this.show = false;
+          // this.$emit('added');
         } else {
           this.$store.commit('editPlanEditDayPlan', {
             id: this.id,
