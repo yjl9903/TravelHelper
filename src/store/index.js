@@ -5,11 +5,19 @@ import createPersistedState from 'vuex-persistedstate';
 
 Vue.use(Vuex);
 
-function cmp(a, b) {
+function cmpDate(a, b) {
   if (a.begin.isBefore(b.begin)) {
     return 1;
   } else if (a.begin.isAfter(b.begin)) {
     return -1;
+  }
+  return 0;
+}
+function cmpTime(a, b) {
+  if (a.begin.isBefore(b.begin)) {
+    return -1;
+  } else if (a.begin.isAfter(b.begin)) {
+    return 1;
   }
   return 0;
 }
@@ -22,24 +30,24 @@ export default new Vuex.Store({
         day: [
           [
             {
-              location: '总统府',
+              name: '总统府',
               begin: new Date('2020/1/6 8:30'),
               end: new Date('2020/1/6 11:00')
             },
             {
-              location: '明故宫',
+              name: '明故宫',
               begin: new Date('2020/1/6 12:00'),
               end: new Date('2020/1/6 16:00')
             }
           ],
           [
             {
-              location: '明故宫',
+              name: '明故宫',
               begin: new Date('2020/1/7 8:30'),
               end: new Date('2020/1/7 11:00')
             },
             {
-              location: '总统府',
+              name: '总统府',
               begin: new Date('2020/1/7 12:00'),
               end: new Date('2020/1/7 16:00')
             }
@@ -130,7 +138,7 @@ export default new Vuex.Store({
       }
       plan.begin = st;
       state.plans.push(plan);
-      state.plans.sort(cmp);
+      state.plans.sort(cmpDate);
     },
     editPlan(state, { id, plan }) {
       id = Number(id);
@@ -183,6 +191,41 @@ export default new Vuex.Store({
         throw new Error('can not delete first day');
       }
       state.plans[id].day.splice(day, 1);
+    },
+    editPlanPushDayPlan(state, { id, day, plan }) {
+      if (!plan.begin) {
+        throw new Error('开始时间不能为空！');
+      } else if (!plan.end) {
+        throw new Error('结束时间不能为空！');
+      }
+      const dayplan = state.plans[id].day[day];
+      const time = dayjs(state.plans[id].begin).add(day, 'day');
+      const st = time
+        .hour(Number(plan.begin.substr(0, 2)))
+        .minute(Number(plan.begin.substr(3, 2)));
+      const ed = time
+        .hour(Number(plan.end.substr(0, 2)))
+        .minute(Number(plan.end.substr(3, 2)));
+      if (st.isAfter(ed)) {
+        throw new Error('开始时间不能晚于结束时间！');
+      }
+      for (const p of dayplan) {
+        const l = time.hour(p.begin.hour()).minute(p.begin.minute());
+        const r = time.hour(p.end.hour()).minute(p.end.minute());
+        if (!dayjs.max(l, st).isAfter(dayjs.min(r, ed))) {
+          throw new Error('与已有时间安排重叠！');
+        }
+        p.begin = l;
+        p.end = r;
+      }
+      plan.begin = st;
+      plan.end = ed;
+      state.plans[id].day[day].push(plan);
+      state.plans[id].day[day].sort(cmpTime);
+    },
+    // editPlanEditDayPlan(state, { id, day, pid, plan }) {},
+    editPlanPopDayPlan(state, { id, day, pid }) {
+      state.plans[id].day[day].splice(pid, 1);
     },
     setTitle(state, s) {
       state.title = s || '出行小助手';

@@ -35,7 +35,7 @@
                 >{{ item.begin | hourMinute }} ~
                 {{ item.end | hourMinute }}</span
               >
-              <span class="title"> {{ item.location }}</span>
+              <span class="title"> {{ item.name }}</span>
             </v-list-item-title>
             <v-list-item-subtitle>
               {{ i === 0 ? '距离出发地' : '距离上一地点' }} {{ getDistance(i) }}
