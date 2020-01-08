@@ -10,7 +10,7 @@
       >
         <span>{{ base.add(day, 'day').format('M 月 D 日') }}</span>
         <div>
-          <v-btn v-if="isEdit" fab small icon @click="deleteDay">
+          <v-btn v-if="isEdit" fab small icon @click="editDay">
             <v-icon>edit</v-icon>
           </v-btn>
           <v-btn
@@ -69,6 +69,9 @@ export default {
       } catch (error) {
         this.$parent.openSnackBar('不能删除唯一一天');
       }
+    },
+    editDay() {
+      this.$router.push(`/plan/${this.$route.params.id}/edit/${this.day}`);
     },
     getDistance() {
       return '20 公里';

@@ -2,6 +2,8 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Store from '../store';
 import Home from '../views/Home.vue';
+import Settings from '../views/Settings.vue';
+import About from '../views/About.vue';
 
 Vue.use(VueRouter);
 
@@ -17,7 +19,7 @@ const routes = [
   {
     path: '/about',
     name: 'about',
-    component: () => import('../views/About.vue'),
+    component: About,
     meta: {
       title: '关于'
     }
@@ -25,7 +27,7 @@ const routes = [
   {
     path: '/settings',
     name: 'settings',
-    component: () => import('../views/Settings.vue'),
+    component: Settings,
     meta: {
       title: '设置'
     }
@@ -41,6 +43,11 @@ const routes = [
   {
     path: '/plan/:id',
     component: () => import('../views/PlanDetail.vue'),
+    props: true
+  },
+  {
+    path: '/plan/:id/edit/:day',
+    component: () => import('../views/EditDay.vue'),
     props: true
   }
 ];
