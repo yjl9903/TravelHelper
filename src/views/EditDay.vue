@@ -88,9 +88,22 @@ export default {
     },
     selPos(pid) {
       this.selected = Number(pid);
-      this.$refs.selectPos.open();
+      if ('position' in this.dayplan[pid]) {
+        this.$refs.selectPos.open(this.dayplan[pid].position.lnglat);
+      } else {
+        this.$refs.selectPos.open();
+      }
     },
-    handleConfirm() {}
+    handleConfirm(position) {
+      this.$store.commit('editPlanEditDayPlan', {
+        id: Number(this.id),
+        day: Number(this.day),
+        pid: this.selected,
+        plan: {
+          position
+        }
+      });
+    }
   },
   beforeRouteEnter(to, from, next) {
     next(vm => {

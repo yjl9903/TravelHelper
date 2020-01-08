@@ -110,7 +110,15 @@ export default {
     }
   },
   methods: {
-    open() {
+    open(pos) {
+      if (pos) {
+        this.center = pos;
+        setTimeout(() => {
+          this.markers.splice(0);
+          this.markers.push(pos);
+          this.onClick({ lnglat: { lng: pos[0], lat: pos[1] } });
+        }, 0);
+      }
       this.markers.splice(0);
       this.selected = null;
       this.show = true;
@@ -151,6 +159,7 @@ export default {
       if (this.selected) {
         this.show = false;
         this.$emit('confirm', this.selected);
+        this.selected = null;
       }
     }
   },

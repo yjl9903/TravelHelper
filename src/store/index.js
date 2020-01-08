@@ -239,12 +239,16 @@ export default new Vuex.Store({
       }
       const dayplan = state.plans[id].day[day];
       const time = dayjs(state.plans[id].begin).add(day, 'day');
-      const st = time
-        .hour(Number(plan.begin.substr(0, 2)))
-        .minute(Number(plan.begin.substr(3, 2)));
-      const ed = time
-        .hour(Number(plan.end.substr(0, 2)))
-        .minute(Number(plan.end.substr(3, 2)));
+      const st = dayjs.isDayjs(plan.begin)
+        ? plan.begin
+        : time
+            .hour(Number(plan.begin.substr(0, 2)))
+            .minute(Number(plan.begin.substr(3, 2)));
+      const ed = dayjs.isDayjs(plan.end)
+        ? plan.end
+        : time
+            .hour(Number(plan.end.substr(0, 2)))
+            .minute(Number(plan.end.substr(3, 2)));
       if (st.isAfter(ed)) {
         throw new Error('开始时间不能晚于结束时间！');
       }
