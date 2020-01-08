@@ -75,9 +75,9 @@
 
 <script>
 import ConfirmDialog from './confirm';
+import dayjs from '../plugins/dayjs';
 
-const date = new Date();
-const today = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()}`;
+const today = dayjs().format('YYYY-MM-DD');
 
 export default {
   name: 'add-plan',
@@ -113,7 +113,7 @@ export default {
       const form = {
         name: this.plan.name || '新的计划',
         day: new Array(Number(this.plan.day)).fill([]),
-        begin: new Date(this.plan.begin + ' 00:00'),
+        begin: dayjs(this.plan.begin),
         beginPos: null
       };
       try {
@@ -140,7 +140,6 @@ export default {
         this.plan.begin = today;
         this.show = false;
       } catch (error) {
-        console.log(error);
         this.showAlert('与已有计划重叠');
       }
     }

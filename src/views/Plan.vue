@@ -10,8 +10,8 @@
         <v-list-item-content>
           <v-list-item-title>{{ item.name }}</v-list-item-title>
           <v-list-item-subtitle>
-            {{ item.begin | date }} ~
-            {{ item.begin | endDate(item.day.length) | date }}
+            {{ item.begin.format('YYYY 年 M 月 D 日') }} ~
+            {{ item.begin.addDay(item.day.length).format('YYYY 年 M 月 D 日') }}
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
