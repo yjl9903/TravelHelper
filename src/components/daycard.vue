@@ -2,7 +2,10 @@
   <v-card>
     <div>
       <v-card-title class="headline" style="justifyContent: space-between">
-        <span>{{ base.add(day, 'day').format('M 月 D 日') }}</span>
+        <div class="d-flex align-center">
+          <v-icon v-if="today" color="deep-orange" class="mr-1">today</v-icon>
+          <span>{{ base.add(day, 'day').format('M 月 D 日') }}</span>
+        </div>
         <div>
           <v-btn v-if="isEdit" fab small icon @click="editDay">
             <v-icon>edit</v-icon>
@@ -66,6 +69,12 @@ export default {
     isEdit: Boolean
   },
   data: () => ({}),
+  computed: {
+    today() {
+      if (!this.base) return false;
+      return this.base.add(this.day, 'day').isSame(dayjs(), 'day');
+    }
+  },
   methods: {
     deleteDay() {
       try {
