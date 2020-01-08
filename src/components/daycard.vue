@@ -1,13 +1,7 @@
 <template>
   <v-card>
     <div>
-      <v-card-title
-        class="headline"
-        :style="{
-          paddingBottom: source.length > 0 ? '0px' : undefined,
-          justifyContent: 'space-between'
-        }"
-      >
+      <v-card-title class="headline" style="justifyContent: space-between">
         <span>{{ base.add(day, 'day').format('M 月 D 日') }}</span>
         <div>
           <v-btn v-if="isEdit" fab small icon @click="editDay">
@@ -27,7 +21,9 @@
         </div>
       </v-card-title>
 
-      <v-list v-if="source.length > 0" two-line>
+      <v-divider></v-divider>
+
+      <v-list class="pt-0" v-if="source.length > 0" two-line>
         <v-list-item v-for="(item, i) in source" :key="i">
           <v-list-item-content>
             <v-list-item-title>
