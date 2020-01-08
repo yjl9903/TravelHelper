@@ -118,6 +118,7 @@ export default {
       };
       try {
         if (this.isEdit) {
+          Reflect.deleteProperty(form, 'beginPos');
           const src = this.$store.state.plans[this.$route.params.id];
           form.day = [...src.day.slice(0, this.plan.day)];
           if (this.plan.day > src.day.length) {
