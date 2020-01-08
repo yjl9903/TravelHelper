@@ -7,7 +7,12 @@
     </template>
     <v-sheet>
       <v-container>
-        <div class="title text-center mb-2">{{ btnText || '选择地点' }}</div>
+        <div class="title text-center mb-2" style="position: relative">
+          <span>{{ btnText || '选择地点' }}</span>
+          <v-btn icon class="close-btn" @click="show = false">
+            <v-icon>close</v-icon>
+          </v-btn>
+        </div>
         <div class="amap-container">
           <el-amap-search-box
             class="search-box"
@@ -183,12 +188,18 @@ export default {
   margin-top: -45px;
 }
 .search-box {
-  display: absolute;
+  position: absolute;
   top: 20px;
-  left: 20px;
+  left: 50%;
+  transform: translate(-50%, 0);
 }
 .amap-container {
-  display: relative;
+  position: relative;
   height: 400px !important;
+}
+.close-btn {
+  position: absolute;
+  right: 0px;
+  top: 0px;
 }
 </style>

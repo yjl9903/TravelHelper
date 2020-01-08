@@ -68,6 +68,10 @@
 
         <v-btn color="primary" @click="submit">确定</v-btn>
 
+        <v-btn v-if="isEdit" class="ml-2" @click="$parent.selPos(pid)"
+          >选择地点</v-btn
+        >
+
         <v-alert class="text-left mt-3" v-show="alert.show" type="error">{{
           alert.text
         }}</v-alert>
