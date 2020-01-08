@@ -45,7 +45,7 @@
 
           <v-list-item-action>
             <v-btn icon>
-              <v-icon>map</v-icon>
+              <v-icon>near_me</v-icon>
             </v-btn>
           </v-list-item-action>
         </v-list-item>
