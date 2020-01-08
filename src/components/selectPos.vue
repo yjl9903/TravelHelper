@@ -31,7 +31,7 @@
           </el-amap>
         </div>
         <div class="mt-3" style="display: flex; justify-content: space-between">
-          <v-chip v-if="selected">{{ selected | formatPos }}</v-chip>
+          <v-chip v-if="selected">{{ selected | formatPos | maxLen }}</v-chip>
           <v-chip v-else>尚未选中地点</v-chip>
           <v-chip @click="submit" color="green" text-color="white">
             <v-avatar left>
@@ -144,6 +144,14 @@ export default {
         this.show = false;
         this.$emit('confirm', this.selected);
       }
+    }
+  },
+  filters: {
+    maxLen(s, l = 20) {
+      if (s.length > l) {
+        s = s.substr(0, l) + '...';
+      }
+      return s;
     }
   }
 };
