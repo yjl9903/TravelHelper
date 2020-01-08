@@ -160,6 +160,22 @@ export default new Vuex.Store({
       state.plans.splice(id, 1);
     },
     editPlanPushDay(state, { id }) {
+      id = Number(id);
+      let c = 0;
+      const st = dayjs(state.plans[id].begin);
+      const ed = st.addDay(state.plans[id].day.length + 1);
+      for (const {
+        begin,
+        day: { length }
+      } of state.plans) {
+        if (id === c) continue;
+        if (
+          !dayjs.max(begin, st).isAfter(dayjs.min(begin.addDay(length), ed))
+        ) {
+          throw new Error('overlap');
+        }
+        c++;
+      }
       state.plans[id].day.push([]);
     },
     editPlanPopDay(state, { id, day }) {

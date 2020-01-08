@@ -84,8 +84,12 @@ export default {
       this.snackbar.show = true;
     },
     addDay() {
-      this.$store.commit('editPlanPushDay', { id: this.id });
-      this.$vuetify.goTo(this.$refs.addDayBtn);
+      try {
+        this.$store.commit('editPlanPushDay', { id: this.id });
+        this.$vuetify.goTo(this.$refs.addDayBtn);
+      } catch (err) {
+        this.openSnackBar('与已有计划重叠');
+      }
     },
     edit() {
       this.snackbar.show = false;
