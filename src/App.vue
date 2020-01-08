@@ -90,8 +90,10 @@ export default {
           }
         },
         {
-          name: '清空收藏',
-          click: () => {}
+          name: '清空置顶',
+          click: () => {
+            this.$store.commit('clearStar');
+          }
         }
       ];
     }

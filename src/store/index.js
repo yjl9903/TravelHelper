@@ -8,6 +8,11 @@ Vue.use(Vuex);
 const today = dayjs();
 
 function cmpPlan(a, b) {
+  if (a.star && !b.star) {
+    return -1;
+  } else if (!a.star && b.star) {
+    return 1;
+  }
   a = a.begin.addDay(a.day.length);
   b = b.begin.addDay(b.day.length);
   if (today.isBefore(a) !== today.isBefore(b)) {
@@ -115,6 +120,18 @@ export default new Vuex.Store({
     title: '出行小助手'
   },
   getters: {
+    getPlanID(state) {
+      return plan => {
+        let c = 0;
+        for (const p of state.plans) {
+          if (plan.begin.isSame(p.begin)) {
+            return c;
+          }
+          c++;
+        }
+        throw new Error('not found');
+      };
+    },
     getPlanDayID(state) {
       return (id, day, plan) => {
         const st = plan.begin;
@@ -180,6 +197,17 @@ export default new Vuex.Store({
     },
     sortPlan(state) {
       state.plans.sort(cmpPlan);
+    },
+    addStar(state, id) {
+      state.plans[id].star = true;
+    },
+    delStar(state, id) {
+      state.plans[id].star = false;
+    },
+    clearStar(state) {
+      for (const p of state.plans) {
+        p.star = false;
+      }
     },
     editPlan(state, { id, plan }) {
       id = Number(id);

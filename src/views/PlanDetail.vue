@@ -11,6 +11,16 @@
             出发地点：{{ plan.beginPos | formatPos }}
           </p>
           <template v-slot:actions>
+            <v-btn
+              @click="
+                plan.star
+                  ? $store.commit('delStar', id)
+                  : $store.commit('addStar', id),
+                  $store.commit('sortPlan'),
+                  refresh(true)
+              "
+              >{{ plan.star ? '取消置顶' : '设为置顶' }}</v-btn
+            >
             <v-btn @click="selBeginPos">选择出发地点</v-btn>
             <v-btn @click="edit">编辑</v-btn>
           </template>
@@ -101,10 +111,17 @@ export default {
       this.$refs.addplan.plan.day = this.plan.day.length;
       this.$refs.addplan.show = true;
     },
-    refresh() {
+    refresh(flag) {
       this.snackbar.show = false;
-      this.plan = this.$store.state.plans[this.id];
-      this.$store.commit('setTitle', this.plan.name);
+      if (flag) {
+        const id = this.$store.getters.getPlanID(this.plan);
+        if (Number(this.id) != id) {
+          this.$router.replace(`/plan/${id}`);
+        }
+      } else {
+        this.plan = this.$store.state.plans[this.id];
+        this.$store.commit('setTitle', this.plan.name);
+      }
     },
     selBeginPos() {
       if (this.plan.beginPos) {
