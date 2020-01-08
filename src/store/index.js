@@ -5,14 +5,34 @@ import createPersistedState from 'vuex-persistedstate';
 
 Vue.use(Vuex);
 
-function cmpDate(a, b) {
-  if (a.begin.isBefore(b.begin)) {
-    return 1;
-  } else if (a.begin.isAfter(b.begin)) {
-    return -1;
+const today = dayjs();
+
+function cmpPlan(a, b) {
+  a = a.begin.addDay(a.day.length);
+  b = b.begin.addDay(b.day.length);
+  if (today.isBefore(a) !== today.isBefore(b)) {
+    if (today.isBefore(a)) {
+      return -1;
+    } else {
+      return 1;
+    }
+  }
+  if (!a.isBefore(today)) {
+    if (a.isBefore(b)) {
+      return -1;
+    } else if (a.isAfter(b)) {
+      return 1;
+    }
+  } else {
+    if (a.isBefore(b)) {
+      return -1;
+    } else if (a.isAfter(b)) {
+      return 1;
+    }
   }
   return 0;
 }
+
 function cmpTime(a, b) {
   if (a.begin.isBefore(b.begin)) {
     return -1;
@@ -156,7 +176,10 @@ export default new Vuex.Store({
       }
       plan.begin = st;
       state.plans.push(plan);
-      state.plans.sort(cmpDate);
+      state.plans.sort(cmpPlan);
+    },
+    sortPlan(state) {
+      state.plans.sort(cmpPlan);
     },
     editPlan(state, { id, plan }) {
       id = Number(id);

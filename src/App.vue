@@ -26,7 +26,7 @@
         <v-icon>edit</v-icon>
       </v-btn>
 
-      <!-- <v-menu left bottom v-if="$route.path === '/'">
+      <v-menu left bottom v-if="$route.path === '/plan'">
         <template v-slot:activator="{ on }">
           <v-btn icon v-on="on">
             <v-icon>mdi-dots-vertical</v-icon>
@@ -37,12 +37,12 @@
           <v-list-item
             v-for="(item, i) in menuList"
             :key="i"
-            @click="item.to !== $route.path && $router.push(item.to)"
+            @click="item.click"
           >
             <v-list-item-title>{{ item.name }}</v-list-item-title>
           </v-list-item>
         </v-list>
-      </v-menu> -->
+      </v-menu>
     </v-app-bar>
 
     <v-content>
@@ -74,23 +74,27 @@ import { mapState } from 'vuex';
 export default {
   name: 'App',
   data: () => ({
-    active: 1,
-    menuList: [
-      {
-        name: '批量删除',
-        to: '/'
-      },
-      {
-        name: '新的一天',
-        to: '/'
-      }
-    ]
+    active: 1
   }),
   computed: {
     ...mapState({
       title: 'title',
       selected: 'selected'
-    })
+    }),
+    menuList() {
+      return [
+        {
+          name: '排序',
+          click: () => {
+            this.$store.commit('sortPlan');
+          }
+        },
+        {
+          name: '清空收藏',
+          click: () => {}
+        }
+      ];
+    }
   },
   created() {
     this.$store.commit('formatDate');
