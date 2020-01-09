@@ -185,7 +185,6 @@ export default {
 }
 .amap-el {
   height: 400px;
-  margin-top: -45px;
 }
 .search-box {
   position: absolute;
