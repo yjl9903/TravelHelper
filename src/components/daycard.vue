@@ -42,7 +42,8 @@
               >
             </v-list-item-subtitle>
             <v-list-item-subtitle>
-              {{ i === 0 ? '距离出发地' : '距离上一地点' }} {{ getDistance(i) }}
+              {{ i === 0 ? '距离出发地' : '距离上一地点' }}
+              {{ getDistance(i) || '? 公里' }}
             </v-list-item-subtitle>
           </v-list-item-content>
 
@@ -60,12 +61,14 @@
     </div>
 
     <show-pos ref="showPos"></show-pos>
+    <el-amap class="amap-el" vid="amapDemo"></el-amap>
   </v-card>
 </template>
 
 <script>
 import dayjs from 'dayjs';
 import ShowPos from './showPos';
+import { calDistance } from '../util';
 
 export default {
   name: 'dayCard',
@@ -73,7 +76,8 @@ export default {
     day: Number,
     source: Array,
     base: dayjs,
-    isEdit: Boolean
+    isEdit: Boolean,
+    begPos: Object
   },
   components: {
     ShowPos
@@ -99,8 +103,23 @@ export default {
     editDay() {
       this.$router.push(`/plan/${this.$route.params.id}/edit/${this.day}`);
     },
-    getDistance() {
-      return '20 公里';
+    getDistance(i) {
+      if (!this.source[i].position) return;
+      if (i === 0) {
+        if (!this.begPos) return;
+        const d = calDistance(
+          this.begPos.lnglat,
+          this.source[i].position.lnglat
+        );
+        return `${Number((d / 1000.0).toFixed(2))} 公里`;
+      } else {
+        if (!this.source[i - 1].position) return;
+        const d = calDistance(
+          this.source[i - 1].position.lnglat,
+          this.source[i].position.lnglat
+        );
+        return `${Number((d / 1000.0).toFixed(2))} 公里`;
+      }
     }
   }
 };

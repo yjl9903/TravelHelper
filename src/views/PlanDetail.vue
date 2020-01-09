@@ -28,6 +28,7 @@
       </v-col>
       <v-col v-for="(item, i) in plan.day" :key="i" cols="12">
         <day-card
+          :begPos="plan.beginPos"
           :base="plan.begin"
           :day="i"
           :source="item"

@@ -22,7 +22,8 @@
               >
             </v-list-item-subtitle>
             <v-list-item-subtitle>
-              {{ i === 0 ? '距离出发地' : '距离上一地点' }} {{ 20 }}
+              {{ i === 0 ? '距离出发地' : '距离上一地点' }}
+              {{ getDistance(i) || '? 公里' }}
             </v-list-item-subtitle>
           </v-list-item-content>
 
@@ -52,6 +53,7 @@
 <script>
 import SelectPos from '@/components/selectPos.vue';
 import AddDay from '@/components/addDay.vue';
+import { calDistance } from '../util';
 
 export default {
   name: 'edit-day',
@@ -106,6 +108,24 @@ export default {
           position
         }
       });
+    },
+    getDistance(i) {
+      if (!this.dayplan[i].position) return;
+      if (i === 0) {
+        if (!this.plan.beginPos) return;
+        const d = calDistance(
+          this.plan.beginPos.lnglat,
+          this.dayplan[i].position.lnglat
+        );
+        return `${Number((d / 1000.0).toFixed(2))} 公里`;
+      } else {
+        if (!this.dayplan[i - 1].position) return;
+        const d = calDistance(
+          this.dayplan[i - 1].position.lnglat,
+          this.dayplan[i].position.lnglat
+        );
+        return `${Number((d / 1000.0).toFixed(2))} 公里`;
+      }
     }
   },
   beforeRouteEnter(to, from, next) {

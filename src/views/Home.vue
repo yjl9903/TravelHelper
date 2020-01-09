@@ -11,7 +11,12 @@
         <v-alert type="warning">暂无出发地点位置信息</v-alert>
       </v-col>
       <v-col v-for="(item, i) in plan.day" :key="i" cols="12">
-        <day-card :base="begin" :day="i" :source="item"></day-card>
+        <day-card
+          :begPos="plan.beginPos"
+          :base="begin"
+          :day="i"
+          :source="item"
+        ></day-card>
       </v-col>
     </v-row>
     <v-row v-else>
