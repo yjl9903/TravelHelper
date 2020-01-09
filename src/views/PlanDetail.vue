@@ -116,6 +116,7 @@ export default {
       this.snackbar.show = false;
       if (flag) {
         const id = this.$store.getters.getPlanID(this.plan);
+        this.plan = this.$store.state.plans[id];
         if (Number(this.id) !== id) {
           this.$router.replace(`/plan/${id}`);
         }
