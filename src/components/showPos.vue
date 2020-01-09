@@ -1,24 +1,14 @@
 <template>
   <v-bottom-sheet v-model="show" hide-overlay>
-    <template v-slot:activator="{ on }">
-      <v-btn v-on="on" v-if="!hideBtn">
-        {{ btnText || '选择地点' }}
-      </v-btn>
-    </template>
     <v-sheet>
       <v-container>
         <div class="title text-center mb-2" style="position: relative">
-          <span>{{ btnText || '选择地点' }}</span>
+          <span>导航</span>
           <v-btn icon class="close-btn" @click="show = false">
             <v-icon>close</v-icon>
           </v-btn>
         </div>
         <div class="amap-container">
-          <el-amap-search-box
-            class="search-box"
-            :search-option="searchOption"
-            :on-search-result="onSearchResult"
-          ></el-amap-search-box>
           <el-amap
             class="amap-el"
             vid="amapDemo"
@@ -52,7 +42,7 @@
 
 <script>
 export default {
-  name: 'select-pos',
+  name: 'show-pos',
   props: {
     btnText: String,
     hideBtn: Boolean,
@@ -128,23 +118,6 @@ export default {
       this.selected = null;
       this.show = true;
     },
-    onSearchResult(pois) {
-      let latSum = 0;
-      let lngSum = 0;
-      if (pois.length > 0) {
-        pois.forEach(poi => {
-          let { lng, lat } = poi;
-          lngSum += lng;
-          latSum += lat;
-          this.markers.push([poi.lng, poi.lat]);
-        });
-        const center = {
-          lng: lngSum / pois.length,
-          lat: latSum / pois.length
-        };
-        this.center = [center.lng, center.lat];
-      }
-    },
     onClick({ lnglat: { lng, lat } }) {
       if (!this.geocoder) return;
       this.geocoder.getAddress([lng, lat], (status, result) => {
@@ -185,13 +158,6 @@ export default {
 }
 .amap-el {
   height: 400px;
-  margin-top: -45px;
-}
-.search-box {
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translate(-50%, 0);
 }
 .amap-container {
   position: relative;

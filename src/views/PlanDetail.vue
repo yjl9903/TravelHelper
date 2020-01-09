@@ -115,7 +115,7 @@ export default {
       this.snackbar.show = false;
       if (flag) {
         const id = this.$store.getters.getPlanID(this.plan);
-        if (Number(this.id) != id) {
+        if (Number(this.id) !== id) {
           this.$router.replace(`/plan/${id}`);
         }
       } else {

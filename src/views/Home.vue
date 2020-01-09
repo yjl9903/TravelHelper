@@ -7,6 +7,9 @@
           <p class="mb-0">结束日期：{{ plan.date.end | date }}</p>
         </v-banner>
       </v-col> -->
+      <v-col v-if="!plan.beginPos" cols="12">
+        <v-alert type="warning">暂无出发地点位置信息</v-alert>
+      </v-col>
       <v-col v-for="(item, i) in plan.day" :key="i" cols="12">
         <day-card :base="begin" :day="i" :source="item"></day-card>
       </v-col>

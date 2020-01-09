@@ -47,18 +47,25 @@
           </v-list-item-content>
 
           <v-list-item-action>
-            <v-btn icon>
+            <v-btn
+              icon
+              v-if="item.position"
+              @click="$refs.showPos.open(item.position.lnglat)"
+            >
               <v-icon>near_me</v-icon>
             </v-btn>
           </v-list-item-action>
         </v-list-item>
       </v-list>
     </div>
+
+    <show-pos ref="showPos"></show-pos>
   </v-card>
 </template>
 
 <script>
 import dayjs from 'dayjs';
+import ShowPos from './showPos';
 
 export default {
   name: 'dayCard',
@@ -67,6 +74,9 @@ export default {
     source: Array,
     base: dayjs,
     isEdit: Boolean
+  },
+  components: {
+    ShowPos
   },
   data: () => ({}),
   computed: {
