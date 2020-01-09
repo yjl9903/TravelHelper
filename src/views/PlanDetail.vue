@@ -139,7 +139,7 @@ export default {
   beforeRouteEnter(to, from, next) {
     next(vm => {
       try {
-        vm.$vuetify.goTo(this);
+        vm.$vuetify.goTo(vm);
         vm.plan = vm.$store.state.plans[to.params.id];
         vm.$store.commit('setTitle', vm.plan.name);
       } catch (error) {
