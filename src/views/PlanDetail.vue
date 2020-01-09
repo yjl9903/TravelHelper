@@ -12,6 +12,7 @@
           </p>
           <template v-slot:actions>
             <v-btn
+              icon
               @click="
                 plan.star
                   ? $store.commit('delStar', id)
@@ -19,10 +20,12 @@
                   $store.commit('sortPlan'),
                   refresh(true)
               "
-              >{{ plan.star ? '取消置顶' : '设为置顶' }}</v-btn
+              ><v-icon color="yellow darken-1">{{
+                plan.star ? 'star_border' : 'star'
+              }}</v-icon></v-btn
             >
-            <v-btn @click="selBeginPos">选择出发地点</v-btn>
-            <v-btn @click="edit">编辑</v-btn>
+            <v-btn icon @click="selBeginPos"><v-icon>map</v-icon></v-btn>
+            <v-btn icon @click="edit"><v-icon>edit</v-icon></v-btn>
           </template>
         </v-banner>
       </v-col>
@@ -42,6 +45,7 @@
 
     <select-pos
       ref="selectPos"
+      btnText="选择出发地点"
       :hideBtn="true"
       @confirm="onPosConfirm"
     ></select-pos>
