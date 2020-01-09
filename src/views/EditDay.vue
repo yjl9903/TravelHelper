@@ -131,6 +131,7 @@ export default {
   beforeRouteEnter(to, from, next) {
     next(vm => {
       try {
+        vm.$vuetify.goTo(vm);
         vm.plan = vm.$store.state.plans[to.params.id];
         vm.dayplan = vm.$store.state.plans[to.params.id].day[to.params.day];
         vm.$store.commit('setTitle', vm.plan.name);
@@ -141,6 +142,7 @@ export default {
   },
   beforeRouteUpdate(to, from, next) {
     try {
+      this.$vuetify.goTo(this);
       this.plan = this.$store.state.plans[to.params.id];
       this.dayplan = this.$store.state.plans[to.params.id].day[to.params.day];
       this.$store.commit('setTitle', this.plan.name);

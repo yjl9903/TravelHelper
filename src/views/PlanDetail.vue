@@ -139,6 +139,7 @@ export default {
   beforeRouteEnter(to, from, next) {
     next(vm => {
       try {
+        vm.$vuetify.goTo(this);
         vm.plan = vm.$store.state.plans[to.params.id];
         vm.$store.commit('setTitle', vm.plan.name);
       } catch (error) {
@@ -148,6 +149,7 @@ export default {
   },
   beforeRouteUpdate(to, from, next) {
     try {
+      this.$vuetify.goTo(this);
       this.plan = this.$store.state.plans[to.params.id];
       this.$store.commit('setTitle', this.plan.name);
       next();
