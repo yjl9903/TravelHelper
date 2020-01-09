@@ -50,7 +50,7 @@
             <v-btn
               icon
               v-if="item.position"
-              @click="$refs.showPos.open(item.position.lnglat)"
+              @click="$refs.showPos.open(item.position)"
             >
               <v-icon>near_me</v-icon>
             </v-btn>

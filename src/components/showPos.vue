@@ -2,8 +2,14 @@
   <v-bottom-sheet v-model="show" hide-overlay>
     <v-sheet>
       <v-container>
-        <div class="title text-center mb-2" style="position: relative">
+        <div
+          class="title text-center mb-2 d-flex align-center justify-center"
+          style="position: relative"
+        >
           <span>导航</span>
+          <v-btn small class="ml-2" color="success" @click="searchNav"
+            >查询</v-btn
+          >
           <v-btn icon class="close-btn" @click="show = false">
             <v-icon>close</v-icon>
           </v-btn>
@@ -25,16 +31,10 @@
             ></el-amap-marker>
           </el-amap>
         </div>
-        <div class="mt-3" style="display: flex; justify-content: space-between">
+        <!-- <div class="mt-3" style="display: flex; justify-content: space-between">
           <v-chip v-if="selected">{{ selected | formatPos | maxLen }}</v-chip>
           <v-chip v-else>尚未选中地点</v-chip>
-          <v-chip @click="submit" color="green" text-color="white">
-            <v-avatar left>
-              <v-icon>send</v-icon>
-            </v-avatar>
-            提交
-          </v-chip>
-        </div>
+        </div> -->
       </v-container>
     </v-sheet>
   </v-bottom-sheet>
@@ -43,18 +43,17 @@
 <script>
 export default {
   name: 'show-pos',
-  props: {
-    btnText: String,
-    hideBtn: Boolean,
-    notfirstLoc: Boolean
-  },
   data: () => ({
     show: false,
     center: [118.857344, 32.022667],
     markers: [],
     searchOption: {},
     geocoder: null,
-    selected: null
+    selected: null,
+    transfer: null,
+    destination: null,
+    nowlnglat: null,
+    amap: null
   }),
   computed: {
     plugin() {
@@ -65,17 +64,16 @@ export default {
           extensions: 'all',
           events: {
             init(o) {
-              if (!that.notfirstLoc) return;
               o.getCurrentPosition((status, result) => {
                 if (result && result.position) {
-                  that.center[0] = result.position.lng;
-                  that.center[1] = result.position.lat;
-                  that.onClick({
-                    lnglat: {
-                      lng: result.position.lng,
-                      lat: result.position.lat
-                    }
-                  });
+                  that.nowlnglat = [result.position.lng, result.position.lat];
+                  that.markers.push([result.position.lng, result.position.lat]);
+                }
+                if (result && result.position && that.destination) {
+                  that.center[0] =
+                    (result.position.lng + that.destination.lnglat[0]) / 2.0;
+                  that.center[1] =
+                    (result.position.lat + that.destination.lnglat[1]) / 2.0;
                 }
               });
             }
@@ -83,9 +81,18 @@ export default {
         },
         {
           pName: 'Geocoder',
+          city: '南京',
           events: {
             init(o) {
               that.geocoder = o;
+            }
+          }
+        },
+        {
+          pName: 'Transfer',
+          events: {
+            init(o) {
+              that.transfer = o;
             }
           }
         }
@@ -94,7 +101,10 @@ export default {
     events() {
       const that = this;
       return {
-        click: that.onClick
+        click: that.onClick,
+        init(o) {
+          that.amap = o;
+        }
       };
     },
     markerEvents() {
@@ -106,12 +116,14 @@ export default {
   },
   methods: {
     open(pos) {
+      this.center = [118.857344, 32.022667];
+      this.nowlnglat = null;
+      this.markers.splice(0);
       if (pos) {
-        this.center = pos;
+        this.destination = pos;
+        this.center = pos.lnglat;
         setTimeout(() => {
-          this.markers.splice(0);
-          this.markers.push(pos);
-          this.onClick({ lnglat: { lng: pos[0], lat: pos[1] } });
+          this.markers.push(pos.lnglat);
         }, 0);
       }
       this.markers.splice(0);
@@ -133,12 +145,19 @@ export default {
         }
       });
     },
-    submit() {
-      if (this.selected) {
-        this.show = false;
-        this.$emit('confirm', this.selected);
-        this.selected = null;
-      }
+    searchNav() {
+      if (!this.transfer) return;
+      if (!this.destination) return;
+      if (!this.nowlnglat) return;
+      this.transfer.setCity(this.destination.addressComponent.city);
+      const st = this.nowlnglat;
+      const ed = this.destination.lnglat;
+      this.transfer.search(st, ed, (status, result) => {
+        this.transfer.searchOnAMAP({
+          origin: result.origin,
+          destination: result.destination
+        });
+      });
     }
   },
   filters: {

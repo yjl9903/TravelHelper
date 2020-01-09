@@ -9,7 +9,12 @@ import VueAMap from 'vue-amap';
 Vue.use(VueAMap);
 VueAMap.initAMapApiLoader({
   key: '5619d27bc087703e30222b73e1577cdb',
-  plugin: ['AMap.autoComplete', 'AMap.Geolocation', 'AMap.Geocoder'],
+  plugin: [
+    'AMap.autoComplete',
+    'AMap.Geolocation',
+    'AMap.Geocoder',
+    'AMap.Transfer'
+  ],
   v: '1.4.4'
 });
 
