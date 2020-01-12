@@ -306,12 +306,12 @@ export default new Vuex.Store({
       const dayplan = state.plans[id].day[day];
       const time = dayjs(state.plans[id].begin).add(day, 'day');
       const st = dayjs.isDayjs(plan.begin)
-        ? plan.begin
+        ? time.hour(plan.begin.hour()).minute(plan.begin.minute())
         : time
             .hour(Number(plan.begin.substr(0, 2)))
             .minute(Number(plan.begin.substr(3, 2)));
       const ed = dayjs.isDayjs(plan.end)
-        ? plan.end
+        ? time.hour(plan.end.hour()).minute(plan.end.minute())
         : time
             .hour(Number(plan.end.substr(0, 2)))
             .minute(Number(plan.end.substr(3, 2)));

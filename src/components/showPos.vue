@@ -121,9 +121,10 @@ export default {
       this.markers.splice(0);
       if (pos) {
         this.destination = pos;
-        this.center = pos.lnglat;
+        this.center[0] = pos.lnglat[0];
+        this.center[1] = pos.lnglat[1];
         setTimeout(() => {
-          this.markers.push(pos.lnglat);
+          this.markers.push(this.center);
         }, 0);
       }
       this.markers.splice(0);
